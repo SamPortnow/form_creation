@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="/static/knockout.js"></script>
+
+<html>
+<head>
+    <title></title>
+    <style>
+        .content
+        {
+            font-size: 62px;
+            border:solid 1px #c3c7bd;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p class="text-center">
+          <h1 class="text-center">
+            create your intervention
+          </h1>
+    </p>
+    <p class="text-center">
+          <h3 class="text-center">
+            what do you want to add?
+          </h3>
+    </p>
+    <hr>
+    <p class="text-center">
+    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> scene </button>
+    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> list </button>
+    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> table </button>
+    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> text </button>
+    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> textarea </button>
+    </p>
+    <hr>
+    <p id="parts" class="text-center">
+
+    </p>
+</div>
+<script src="/static/main.js?version=${version}"></script>
+</body>
+</html>
+

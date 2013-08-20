@@ -8,6 +8,8 @@
 <style>
     .parts
     {
+        border:solid 1px #c3c7bd;
+        width: 1024;
         height: 768px;
     }
     .part
@@ -52,18 +54,27 @@
     </p>
     <hr>
     <div class="parts text-center" data-bind="foreach: partList">
-        <div class="part text-center">
-            <span data-bind="text: text"></span>
+        <div class="part text-center" data-bind='style:{ width: width, height: height, fontSize: fontSize }'>
+            <span data-bind="text: text "></span>
          </div>
     </div>
 <hr />
 
-<div id="details" data-bind="dialog: { autoOpen: false, resizable: false, modal: false}, template: { name: 'editPart', data: selectedProduct, if: selectedProduct }, openDialog: selectedProduct">
+<div id="details" data-bind="dialog: { autoOpen: false, resizable: false, modal: false}, template: { name: 'editPart', data: selectedPart, if: selectedPart }, openDialog: selectedPart">
 </div>
 
 <script id="editPart" type="text/html">
     <p>
-        <input data-bind="value: editText" placeholder="enter text..."  />
+        <textarea data-bind="value: editText" placeholder="enter text..."  />
+    </p>
+    <p>
+        <input data-bind="value: editWidth" placeholder="enter width..."  />
+    </p>
+    <p>
+        <input data-bind="value: editHeight" placeholder="enter height..."  />
+    </p>
+    <p>
+        <input data-bind="value: editFontSize" placeholder="enter font size..."  />
     </p>
     <button data-bind="jqButton: {}, click: $root.accept">Accept</button>
     <button data-bind="jqButton: {}, click: $root.cancel">Cancel</button>

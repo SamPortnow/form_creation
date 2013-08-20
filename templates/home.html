@@ -5,7 +5,19 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="/static/knockout.js"></script>
+<style>
+    .parts
+    {
+        height: 768px;
+    }
+    .part
+    {
+        font-size: 62px;
+        border:solid 1px #c3c7bd;
+        text-align:center;
+    }
 
+</style>
 <html>
 <head>
     <title></title>
@@ -39,9 +51,23 @@
     <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> textarea </button>
     </p>
     <hr>
-    <p id="parts" class="text-center">
+    <div class="parts text-center" data-bind="foreach: partList">
+        <div class="part text-center">
+            <span data-bind="text: text"></span>
+         </div>
+    </div>
+<hr />
 
+<div id="details" data-bind="dialog: { autoOpen: false, resizable: false, modal: false}, template: { name: 'editPart', data: selectedProduct, if: selectedProduct }, openDialog: selectedProduct">
+</div>
+
+<script id="editPart" type="text/html">
+    <p>
+        <input data-bind="value: editText" placeholder="enter text..."  />
     </p>
+    <button data-bind="jqButton: {}, click: $root.accept">Accept</button>
+    <button data-bind="jqButton: {}, click: $root.cancel">Cancel</button>
+</script>
 </div>
 <script src="/static/main.js?version=${version}"></script>
 </body>

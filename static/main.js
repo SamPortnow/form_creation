@@ -102,6 +102,7 @@ var ViewModel = function() {
              self.partList.push(new Part(
                  selected.id(), selected.text(), selected.width(), selected.height(), selected.fontSize()));
             $(".part").draggable();
+            $(".part").resizable();
 
         }
 

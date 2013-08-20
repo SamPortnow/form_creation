@@ -54,8 +54,8 @@
     </p>
     <hr>
     <div class="parts text-center" data-bind="foreach: partList">
-        <div class="part text-center" data-bind='style:{ width: width, height: height, fontSize: fontSize }'>
-            <span data-bind="text: text "></span>
+        <div class="part text-center" data-bind='style:{ width: width, height: height, fontSize: fontSize }, click: $root.editPart'>
+            <span data-bind="text: text"></span>
          </div>
     </div>
 <hr />

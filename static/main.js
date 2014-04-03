@@ -43,71 +43,131 @@ ko.bindingHandlers.jqButton = {
     }
 };
 
+var Part = function(options, isNew) {
 
-
-
-var Part = function(id, text, width, height, fontSize, isNew) {
-
-    this.id = ko.observable(id);
-    this.text = ko.observable(text);
-    this.width = ko.observable(width);
-    this.height = ko.observable(height);
-    this.fontSize = ko.observable(fontSize);
     this.isNew = isNew;
 
-    this.editId = ko.observable(id);
-    this.editText = ko.observable(text);
-    this.editWidth = ko.observable(width);
-    this.editHeight = ko.observable(height);
-    this.editFontSize = ko.observable(fontSize);
+    for (parameter in options)
+    {
+        this[parameter] = ko.observable(options[parameter]);
+        this["edit"+parameter] = ko.observable(options[parameter]);
+    }
 
     //persist edits to real values on accept
     this.accept = function() {
-        this.id(this.editId()).
-            text(this.editText()).
-            width(this.editWidth()).
-            height(this.editHeight()).
-            fontSize(this.editFontSize());
+        for (parameter in options)
+        {
+            this[parameter](this["edit"+parameter]());
+        }
     }.bind(this);
 
     //reset to originals on cancel
     this.cancel = function() {
-        this.editId(this.id()).
-            editText(this.text()).
-            editWidth(this.width()).
-            editHeight(this.height());
+
+        for (parameter in options)
+        {
+            this["edit"+parameter](this[parameter]());
+        }
     }.bind(this);
+
 }
+
 
 var ViewModel = function() {
     var self = this;
+    var options;
+    var typeArea;
+
+    this.sectionList = ko.observableArray([
+    ]);
+
     this.partList = ko.observableArray([
     ]);
 
+    this.listEls = ko.observableArray([
+    ]);
+
+    this.partText = ko.observableArray([
+    ]);
+
     this.selectedPart = ko.observable();
-    this.editPart = function(PartToEdit) {
+    this.editPart = function(PartToEdit)
+    {
+        console.log(PartToEdit);
         self.selectedPart(PartToEdit);
     };
-    this.addPart = function() {
-        self.selectedPart(new Part("", "", "", "", "", true));
+
+    this.addPart = function(data, event) {
+        typeArea = $.trim(event.currentTarget.textContent);
+            $('#editPart').html($('#textTemplate').html());
+            options = {
+                text: "",
+                width: "",
+                height: "",
+                fontSize: ""
+            }
+
+        self.selectedPart(new Part(options, true));
+        $('.fonts').fontselect();
     },
+
+        this.addOrderedList = function(data, event)
+    {
+        typeArea = $.trim(event.currentTarget.textContent);
+        $('#editPart').html($('#listTemplate').html());
+        options = {
+            width: "",
+            height: "",
+            numberElements: ""
+        }
+
+        self.selectedPart(new Part(options, true));
+    },
+
+
     this.removePart = function(Part) {
         self.partList.remove(Part);
     },
+
     this.accept = function() {
         var selected = self.selectedPart();
         selected.accept();
-
-        if (selected.isNew) {
-             self.partList.push(new Part(
-                 selected.id(), selected.text(), selected.width(), selected.height(), selected.fontSize()));
-            $(".part").draggable();
+        var selected_options = {};
+        if (selected.isNew)
+        {
+            for (selection in options)
+            {
+                selected_options[selection] = selected[selection]();
+            }
+            if (typeArea == 'text')
+            {
+               self.partText.push(new Part(selected_options));
+            }
+            else if (typeArea == 'list')
+            {
+               self.listEls.push(new Part(selected_options));
+            }
             $(".part").resizable();
+            $(".part").draggable({
+                drag: function(event, ui)
+                {
+                    if ($(this).parent().attr('class') != 'text text-center')
+                    {
+                        $(this).detach()
+                        $('.text').append(this);
+                    }
+                }
+            });
+            $(".part").droppable({
+                hoverClass: "ui-state-highlight",
+                drop: function(event, ui)
+                {
+                    $(this).append($(ui.draggable));
+                }
 
+            });
         }
-
-        self.selectedPart("");
-    },
+    }
     this.cancel = function() {
         self.selectedPart().cancel();
         self.selectedPart("");

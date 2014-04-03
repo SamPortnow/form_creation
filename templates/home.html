@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/fontselect.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="/static/knockout.js"></script>
+<script src="/static/jquery.fontselect.js"></script>
 <style>
-    .parts
+    .container
     {
         border:solid 1px #c3c7bd;
         width: 1024;
@@ -33,49 +36,90 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <p class="text-center">
-          <h1 class="text-center">
-            create your intervention
-          </h1>
-    </p>
     <p class="text-center">
           <h3 class="text-center">
             what do you want to add?
           </h3>
     </p>
-    <hr>
     <p class="text-center">
-    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> scene </button>
-    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> list </button>
-    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> table </button>
-    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> text </button>
-    <button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> textarea </button>
+    <!--<button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> scene </button>-->
+    <!--<button type="button" data-bind="click:addOrderedList" class="btn btn-primary btn-lg"> ordered list </button>-->
+    <!--<button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> table </button>-->
+    <!--<button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> text </button>-->
+    <!--<button type="button" data-bind="click:addPart" class="btn btn-primary btn-lg"> textarea </button>-->
+    <button type="button" data-bind="click:addSection" class = "btn btn-primary btn-lg"> add a section </button>
     </p>
     <hr>
-    <div class="parts text-center" data-bind="foreach: partList">
-        <div class="part text-center" data-bind='style:{ width: width, height: height, fontSize: fontSize }, click: $root.editPart'>
-            <span data-bind="text: text"></span>
-         </div>
-    </div>
-<hr />
+    <div class="container">
 
-<div id="details" data-bind="dialog: { autoOpen: false, resizable: false, modal: false}, template: { name: 'editPart', data: selectedPart, if: selectedPart }, openDialog: selectedPart">
+
+    </div>
+    <div class = "ok">
+        <div class="text text-center" data-bind="foreach: partText">
+            <div class="part text-center" data-bind='style:{ width: width, height: height, fontSize: fontSize }, click: $root.editPart'>
+                <span data-bind="text: text"></span>
+             </div>
+        </div>
+        <ol class="list text-center" data-bind="foreach: partList">
+            <li>
+
+            </li>
+        </ol>
+    </div>
+    <hr>
+
+<div id="details" data-bind="dialog: { autoOpen: false, resizable: true, modal: false, title:'edit area'}, template: { name: 'editPart', data: selectedPart, if: selectedPart }, openDialog: selectedPart">
 </div>
 
 <script id="editPart" type="text/html">
-    <p>
-        <textarea data-bind="value: editText" placeholder="enter text..."  />
+</script>
+<script id="textTemplate" type="text/html">
+        <p>
+        <textarea data-bind="value: edittext" placeholder="enter text..."  />
     </p>
     <p>
-        <input data-bind="value: editWidth" placeholder="enter width..."  />
+        <input data-bind="value: editwidth" placeholder="enter width..."  />
     </p>
     <p>
-        <input data-bind="value: editHeight" placeholder="enter height..."  />
+        <input data-bind="value: editheight" placeholder="enter height..."  />
     </p>
     <p>
-        <input data-bind="value: editFontSize" placeholder="enter font size..."  />
+        <input data-bind="value: editfontSize" placeholder="enter font size..."  />
     </p>
+    <p>
+        <input class="fonts"/>
+    </p>
+    <button data-bind="jqButton: {}, click: $root.accept">Accept</button>
+    <button data-bind="jqButton: {}, click: $root.cancel">Cancel</button>
+</script>
+<script id="listTemplate" type="text/html">
+    <p>
+        <input data-bind="value: editwidth" placeholder="enter width..."  />
+    </p>
+    <p>
+        <input data-bind="value: editheight" placeholder="enter height..."  />
+    </p>
+    <p>
+        <input data-bind="value: editnumberElements" placeholder="enter the number of list elements..."  />
+    </p>
+
+    <button data-bind="jqButton: {}, click: $root.accept">Accept</button>
+    <button data-bind="jqButton: {}, click: $root.cancel">Cancel</button>
+</script>
+<script id="tableTemplate" type="text/html">
+    <p>
+        <input data-bind="value: editwidth" placeholder="enter width..."  />
+    </p>
+    <p>
+        <input data-bind="value: editheight" placeholder="enter height..."  />
+    </p>
+    <p>
+        <input data-bind="value: editnumberColumns" placeholder="enter the number of columns..."  />
+    </p>
+    <p>
+        <input data-bind="value: editnumberRows" placeholder="enter the number of rows..."  />
+    </p>
+
     <button data-bind="jqButton: {}, click: $root.accept">Accept</button>
     <button data-bind="jqButton: {}, click: $root.cancel">Cancel</button>
 </script>
